@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
-from eshop import Product, ShoppingCart, Order
+from app.eshop import Product, ShoppingCart, Order
 
 class TestEShop(unittest.TestCase):
 
