@@ -1,5 +1,6 @@
 from behave import given, when, then
 from app.eshop import Product, ShoppingCart, Order
+from unittest.mock import MagicMock
 
 @given('A product "{name}" with price {price:d} and availability {availability:d}')
 def step_impl(context, name, price, availability):
@@ -70,11 +71,12 @@ def step_impl(context):
 
 @given('An order is created from the cart')
 def step_impl(context):
-    context.order = Order(context.cart)
+    context.mock_shipping = MagicMock()
+    context.order = Order(context.cart, context.mock_shipping)
 
 @when('I place the order')
 def step_impl(context):
-    context.order.place_order()
+    context.order.place_order("Нова Пошта")
 
 @then('The cart should be empty')
 def step_impl(context):

@@ -86,8 +86,13 @@ class TestEShop(unittest.TestCase):
     # 8. Тестування класу Order (успішне замовлення)
     def test_order_success(self):
         self.cart.add_product(self.product, 5)
-        order = Order(self.cart)
-        order.place_order()
+
+        # Створюємо заглушку для shipping_service
+        mock_shipping = MagicMock()
+        order = Order(self.cart, mock_shipping)
+
+        # Тепер place_order вимагає тип доставки, передаємо будь-який
+        order.place_order("Нова Пошта")
 
         # Перевіряємо, чи зменшилась кількість товару на складі
         self.assertEqual(self.product.available_amount, 5,
@@ -96,11 +101,12 @@ class TestEShop(unittest.TestCase):
     # 9. Тестування очищення корзини після замовлення
     def test_cart_cleared_after_order(self):
         self.cart.add_product(self.product, 1)
-        order = Order(self.cart)
-        order.place_order()
 
-        # У ShoppingCart метод submit_cart_order робить self.products = dict()
-        # Але перевіримо через calculate_total або прямий доступ
+        # Створюємо заглушку для shipping_service
+        mock_shipping = MagicMock()
+        order = Order(self.cart, mock_shipping)
+        order.place_order("Нова Пошта")
+
         self.assertEqual(len(self.cart.products), 0, "Корзина має бути пуста після замовлення")
 
     # 10. Тестування нерівності продуктів (різні імена)
